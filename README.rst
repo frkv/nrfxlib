@@ -3,7 +3,7 @@
 nrfxlib
 #######
 
-nrfxlib is a repository that contains RTOS-independent libraries to be
+nrfxlib is a repository that contains RTOS-independent libraries and modules to be
 used with Nordic Semiconductor SoCs.
 
 Supported SoCs
@@ -20,3 +20,11 @@ Semiconductor. Refer to each individual library for more information.
    bsdlib/README
    crypto/README
    nfc/README
+
+Each module in this repository supports a different set of SoC from Nordic
+Semiconductor. Refer to each individual module for more information.
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Modules:
+   nrf_security/README

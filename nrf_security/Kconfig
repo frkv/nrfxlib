@@ -8,7 +8,7 @@ config NORDIC_SECURITY_BACKEND
 	help
 	  nRF Connect SDK Security provides crypto functionality through
 	  different backends.
-	  Some HW plcatforms supports the used of HW accelrated crypto
+	  Some HW platforms supports the used of HW accelerated crypto
 	  features.
 
 if NORDIC_SECURITY_BACKEND
@@ -467,7 +467,7 @@ choice
 	    bool "mbedtls vanilla" if MBEDTLS_VANILLA_BACKEND
 endchoice
 
-config NRF_CRYPTO_HASH_SHA512
+config MBEDTLS_SHA512_C
 	bool
 	prompt "SHA-512 hash functionality"
 	depends on MBEDTLS_VANILLA_BACKEND

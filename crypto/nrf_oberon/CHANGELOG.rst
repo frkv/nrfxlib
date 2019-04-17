@@ -5,6 +5,68 @@ Changelog - nRF Oberon
 
 All notable changes to this project are documented in this file.
 
+nrf_oberon - 3.0.0
+
+Added
+=====
+
+Added the following Oberon crypto libraries for nrf9160, nRF52, and nrf51 architctures.
+
+..note::
+  *The include files have changed prefix from occ_ to ocrypto_ as well as all the APIs.
+
+..note::
+  *short-wchar: Those libraries are compiled with a wchar_t size of 16 bits
+
+  * nrf_oberon, nrf9160 variants
+
+  * ``cortex-m33/hard-float/liboberon_3.0.0.a``
+  * ``cortex-m33/soft-float/liboberon_3.0.0.a``
+
+  * short-wchar
+
+    * ``cortex-m33/hard-float/short-wchar/liboberon_3.0.0.a``
+    * ``cortex-m33/soft-float/short-wchar/liboberon_3.0.0.a``
+
+  * Keil
+
+    * ``cortex-m33/hard-float/short-wchar/oberon_3.0.0.lib``
+    * ``cortex-m33/soft-float/short-wchar/oberon_3.0.0.lib``
+
+* nrf_oberon, nrf52 variants
+
+  * ``cortex-m4/hard-float/liboberon_3.0.0.a``
+  * ``cortex-m4/soft-float/liboberon_3.0.0.a``
+
+  * short-wchar
+
+    * ``cortex-m4/hard-float/short-wchar/liboberon_3.0.0.a``
+    * ``cortex-m4/soft-float/short-wchar/liboberon_3.0.0.a``
+
+  * Keil
+
+    * ``cortex-m4/soft-float/short-wchar/oberon_3.0.0.lib``
+    * ``cortex-m4/hard-float/short-wchar/oberon_3.0.0.lib``
+
+* nrf_oberon, nrf51 variants
+
+  * ``cortex-m0/soft-float/liboberon_3.0.0.a``
+
+  * short-wchar
+
+    * ``cortex-m0/soft-float/short-wchar/liboberon_3.0.0.a``
+
+  * Keil
+
+    * ``cortex-m0/soft-float/short-wchar/oberon_3.0.0.lib``
+
+
+Removed
+=======
+
+* All 2.0.7 versions of the library and old include files
+
+
 nrf_oberon - 2.0.7
 ******************
 
