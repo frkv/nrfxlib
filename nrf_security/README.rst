@@ -4,7 +4,7 @@ Nordic Security Module
 ======================
 
 The nrf_security module is intended to provide additional features and
-configurations to mbed TLS. It relies on the `nrf_cc310_mbedcrypto`_ library
+configurations to mbed TLS. It relies on the :ref:`nrf_cc310_mbedcrypto_readme` library
 for hardware accelerated cryptography in nRF52840 and nRF9160 SoCs.
 
 .. toctree::

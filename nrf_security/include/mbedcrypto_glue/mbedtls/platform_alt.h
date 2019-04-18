@@ -5,7 +5,7 @@
  */
 
 /**@file
- * @defgroup mbedcrypto_glue
+ * @defgroup mbedcrypto_glue mbed TLS glue layer
  * @{
  * @brief The mbedcrypto glue is a crypto toolbox glue layer coupling
  *        software and hardware-accelerated cryptography. The glue layer is implemented 
