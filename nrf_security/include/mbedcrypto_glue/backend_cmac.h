@@ -8,9 +8,7 @@
  * @defgroup mbedcrypto_glue_cmac mbedcrypto CMAC glue
  * @ingroup mbedcrypto_glue
  * @{
- * @brief This is a glue layer for mbedcrypto CMAC APIs.
- *
- * This includes typedefs for backend API abstraction.
+ * @brief Glue layer for mbedcrypto CMAC APIs, including typedefs for backend API abstraction.
  */
 #ifndef BACKEND_CMAC_H
 #define BACKEND_CMAC_H
@@ -21,28 +19,28 @@
 #include MBEDTLS_CONFIG_FILE
 #endif
 
-#if defined(MBEDTLS_CMAC_ALT)
+#if defined(MBEDTLS_CMAC_ALT)||(DOXYGEN)
 
 #include "mbedtls/cmac.h"
 
-/**@brief Typedef of function pointer to check if the backend support CMAC given cipher_info,
- *        key and key bits
+/**@brief Function pointer to check if the backend supports CMAC, depending on cipher_info,
+ *        key, and key bits.
  *
  * @details The value returned by the backend implementing this function pointer is
  *          dynamically checked. If the return value is 0, then the backend does not
- *          support the CMAC mode. If the value is positive then the backend with the
- *          highest value will be selected (priority based).
+ *          support the CMAC mode. If the value is positive, then the backend with the
+ *          highest value is selected (priority based).
  *
  * @param[in]   cipher_info Cipher info for the CMAC operation.
- * @param[in]   key         Pointer to array holding the key.
+ * @param[in]   key         Pointer to the array holding the key.
  * @param[in]   keybits     Key size in bits.
  *
- * @returns 0 if the CMAC functionality is not supported, otherwise a priority where higher is better.
+ * @return 0 if the CMAC functionality is not supported, otherwise a priority where higher is better.
  */
 typedef int (*mbedtls_cipher_cmac_check_fn)(const mbedtls_cipher_info_t *cipher_info , const unsigned char *key, size_t keybits);
 
 
-/**@brief Typedef of function pointer to do CMAC starts operation using given key
+/**@brief Function pointer to do CMAC starts operation using given key
  *
  * This function pointer has a signature equal to @c mbedtls_cipher_cmac_start.
  *
@@ -52,7 +50,7 @@ typedef int (*mbedtls_cipher_cmac_check_fn)(const mbedtls_cipher_info_t *cipher_
  * @param[in]       key     Pointer to array holding the key.
  * @param[in]       keybits Key size in bits.
  *
- * @returns 0 if operation was successful, otherwise a negative value corresponding to the error.
+ * @return 0 if operation was successful, otherwise a negative value corresponding to the error.
  */
 typedef int (*mbedtls_cipher_cmac_starts_fn)(mbedtls_cipher_context_t *ctx , const unsigned char *key, size_t keybits);
 
@@ -65,7 +63,7 @@ typedef int (*mbedtls_cipher_cmac_starts_fn)(mbedtls_cipher_context_t *ctx , con
  * @param[in]       input   Pointer to array holding additional input.
  * @param[in]       ilen    Length of additional input.
  *
- * @returns 0 if operation was successful, otherwise a negative value corresponding to the error.
+ * @return 0 if operation was successful, otherwise a negative value corresponding to the error.
  */
 typedef int (*mbedtls_cipher_cmac_update_fn)(mbedtls_cipher_context_t *ctx , const unsigned char *input, size_t ilen);
 
@@ -77,7 +75,7 @@ typedef int (*mbedtls_cipher_cmac_update_fn)(mbedtls_cipher_context_t *ctx , con
  * @param[in,out]   ctx     Pointer to context for the CMAC operation.
  * @param[out]      output  Output of the CMAC operation.
  *
- * @returns 0 if operation was successful, otherwise a negative value corresponding to the error.
+ * @return 0 if operation was successful, otherwise a negative value corresponding to the error.
  */
 typedef int (*mbedtls_cipher_cmac_finish_fn)(mbedtls_cipher_context_t *ctx , unsigned char *output);
 
@@ -88,7 +86,7 @@ typedef int (*mbedtls_cipher_cmac_finish_fn)(mbedtls_cipher_context_t *ctx , uns
  *
  * @param[in,out]   ctx     Pointer to context for the CMAC operation to reset.
  *
- * @returns 0 if operation was successful, otherwise a negative value corresponding to the error.
+ * @return 0 if operation was successful, otherwise a negative value corresponding to the error.
  */
 typedef int (*mbedtls_cipher_cmac_reset_fn)(mbedtls_cipher_context_t *ctx);
 
@@ -113,7 +111,7 @@ typedef void (*mbedtls_cipher_cmac_free_fn)(mbedtls_cipher_context_t *ctx);
  * @param[in]       ilen    Length of additional input.
  * @param[out]      output  Output of the CMAC operation.
  *
- * @returns 0 if operation was successful, otherwise a negative value corresponding to the error.
+ * @return 0 if operation was successful, otherwise a negative value corresponding to the error.
  */
 typedef int (*mbedtls_cipher_cmac_fn)(const mbedtls_cipher_info_t *cipher_info , const unsigned char *key, size_t keylen , const unsigned char *input, size_t ilen , unsigned char *output);
 
@@ -128,7 +126,7 @@ typedef int (*mbedtls_cipher_cmac_fn)(const mbedtls_cipher_info_t *cipher_info ,
  * @param[in]       in_len  Length of additional input.
  * @param[out]      output  Output of the CMAC operation.
  *
- * @returns 0 if operation was successful, otherwise a negative value corresponding to the error.
+ * @return 0 if operation was successful, otherwise a negative value corresponding to the error.
  */
 typedef int (*mbedtls_aes_cmac_prf_128_fn)(const unsigned char *key, size_t key_len , const unsigned char *input, size_t in_len , unsigned char output[16]);
 
