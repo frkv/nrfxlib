@@ -162,3 +162,7 @@ endif()
 if(NOT CONFIG_NRF_CRYPTO_BACKEND_COMBINATION_0)
   zephyr_append_cmake_library(mbedcrypto_vanilla)
 endif()
+
+if(CONFIG_MBEDTLS_LIBRARY)
+  add_library(mbedtls_external ALIAS mbedtls_vanilla)
+endif()
