@@ -112,5 +112,5 @@ mbedtls_config_define_depends("MBEDTLS_KEY_EXCHANGE_DHE_RSA_ENABLED"
 )
 
 configure_file(${CMAKE_CURRENT_LIST_DIR}/../configs/nrf-config.h.template
-               ${CMAKE_CURRENT_BINARY_DIR}/include/nrf-config.h)
-set(MBEDTLS_CONFIGURATION \"${CMAKE_CURRENT_BINARY_DIR}/include/nrf-config.h\")
+               ${CMAKE_CURRENT_BINARY_DIR}/include/${CONFIG_MBEDTLS_CFG_FILE})
+#set(MBEDTLS_CONFIGURATION \"${CMAKE_CURRENT_BINARY_DIR}/include/nrf-config.h\")

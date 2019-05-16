@@ -227,7 +227,7 @@
 #cmakedefine MBEDTLS_PLATFORM_PRINTF_ALT
 #cmakedefine MBEDTLS_PLATFORM_SNPRINTF_ALT
 //#define MBEDTLS_PLATFORM_NV_SEED_ALT
-#cmakedefine MBEDTLS_PLATFORM_SETUP_TEARDOWN_ALT - depends on backend configuration
+#cmakedefine MBEDTLS_PLATFORM_SETUP_TEARDOWN_ALT
 
 /**
  * \def MBEDTLS_DEPRECATED_WARNING
@@ -2938,7 +2938,6 @@
 
 /* Memory buffer allocator options */
 //#define MBEDTLS_MEMORY_ALIGN_MULTIPLE      4 /**< Align on multiples of this value */
-
 /* Platform options */
 //#define MBEDTLS_PLATFORM_STD_MEM_HDR   <stdlib.h> /**< Header to include if MBEDTLS_PLATFORM_NO_STD_FUNCTIONS is defined. Don't define if no header is needed. */
 //#define MBEDTLS_PLATFORM_STD_CALLOC        calloc /**< Default allocator to use, can be undefined */
