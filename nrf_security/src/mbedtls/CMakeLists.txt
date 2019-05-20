@@ -30,7 +30,7 @@ PREPEND(src_crypto ${ARM_MBEDTLS_ROOT}/library/
     cipher.c
     # cipher_wrap.c - replaced in nrf_mbedtls
     cmac.c
-    ctr_drbg.c
+    # ctr_drbg.c # Placed in dedicated mbeddrbg lib for correct symbol resolving during linking
     des.c
     dhm.c
     ecdh.c
@@ -103,12 +103,6 @@ PREPEND(src_tls ${ARM_MBEDTLS_ROOT}/library/
 
 # ----------  Replacement sources - modified mbedTLS sources  -------------
 
-if(CONFIG_SOC_NRF52840 OR CONFIG_SOC_NRF9160)
-  list(APPEND src_crypto ${NRF_MBEDTLS_ROOT}/src/backend/cc310/replacements/entropy.c)
-else()
-  list(APPEND src_crypto ${NRF_MBEDTLS_ROOT}/src/backend/nrf5x/replacements/entropy_nrf5x.c)
-endif()
-
 PREPEND(src_crypto_replacement ${NRF_MBEDTLS_ROOT}/src/mbedtls/replacements/
     cipher_wrap.c
     pem.c
@@ -134,11 +128,23 @@ if(TARGET mbedcrypto_cc310)
   target_link_libraries(mbedcrypto_vanilla PRIVATE mbedcrypto_cc310)
 endif()
 
+# mbeddrbg library.
+# In order to ensure correct linking to glue functions from ctr_drbg this file must
+# be placed in independent library.
+zephyr_library_named(mbeddrbg)
+zephyr_include_directories(include)
+zephyr_library_sources(${ARM_MBEDTLS_ROOT}/library/ctr_drbg.c)
+zephyr_library_compile_definitions(-DMBEDTLS_AES_ALT)
+if(CONFIG_SOC_NRF52840 OR CONFIG_SOC_NRF9160)
+  zephyr_library_sources(${NRF_MBEDTLS_ROOT}/src/backend/cc310/replacements/entropy.c)
+else()
+  zephyr_library_sources(${NRF_MBEDTLS_ROOT}/src/backend/nrf5x/replacements/entropy_nrf5x.c)
+endif()
+
 add_library(mbedx509_vanilla STATIC "")
 set(ZEPHYR_CURRENT_LIBRARY mbedx509_vanilla)
 zephyr_library_sources(${src_x509})
 zephyr_library_include_directories(${common_includes})
-#zephyr_library_compile_definitions(-DMBEDTLS_CONFIG_FILE=${MBEDTLS_CONFIGURATION})
 zephyr_library_link_libraries(zephyr_interface)
 if(TARGET mbedcrypto_cc310)
   zephyr_library_include_directories(
@@ -146,13 +152,9 @@ if(TARGET mbedcrypto_cc310)
   )
 endif()
 
-#add_library(mbedtls_vanilla STATIC "")
-#set(ZEPHYR_CURRENT_LIBRARY mbedtls_vanilla)
 zephyr_library_named(mbedtls_vanilla)
 zephyr_library_sources(${src_tls} ${src_tls_replacement})
 zephyr_library_include_directories(${common_includes})
-#zephyr_library_compile_definitions(-DMBEDTLS_CONFIG_FILE=${MBEDTLS_CONFIGURATION})
-#zephyr_library_link_libraries(zephyr_interface)
 target_link_libraries(mbedtls_vanilla INTERFACE mbedx509_vanilla)
 if(TARGET mbedcrypto_cc310)
   zephyr_library_include_directories(
@@ -165,8 +167,6 @@ if(NOT CONFIG_NRF_CRYPTO_BACKEND_COMBINATION_0)
 endif()
 
 if(CONFIG_MBEDTLS_LIBRARY)
-#  zephyr_library_sources(${NRF_MBEDTLS_ROOT}/src/mbedtls/zephyr_init.c)
   zephyr_library_sources(${ZEPHYR_BASE}/ext/lib/crypto/mbedtls/zephyr_init.c)
   zephyr_library_link_libraries(${IMAGE}mbedTLS)
-#  add_library(mbedtls_external ALIAS mbedtls_vanilla)
 endif()

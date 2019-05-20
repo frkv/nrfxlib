@@ -47,11 +47,11 @@ function(library_redefine_symbols backend template)
   string(TOLOWER "${backend}" MBEDTLS_BACKEND_PREFIX)
   configure_file(${template}
                  symbol_rename_${MBEDTLS_BACKEND_PREFIX}.txt)
-  
+
   set(BACKEND_RENAMED_LIBARY libmbedcrypto_${MBEDTLS_BACKEND_PREFIX}_backend.a)
   add_custom_command(
     OUTPUT ${BACKEND_RENAMED_LIBARY}
-    COMMAND ${CMAKE_OBJCOPY} 
+    COMMAND ${CMAKE_OBJCOPY}
             --redefine-syms
             ${CMAKE_CURRENT_BINARY_DIR}/symbol_rename_${MBEDTLS_BACKEND_PREFIX}.txt
             $<TARGET_FILE:mbedcrypto_${MBEDTLS_BACKEND_PREFIX}>
