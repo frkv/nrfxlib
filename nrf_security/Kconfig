@@ -55,6 +55,18 @@ config MBEDTLS_TIMING_C
 config MBEDTLS_TIMING_ALT
 	bool
 
+menu "mbed TLS debugging"
+	depends on MBEDTLS_TLS_LIBRARY
+
+config MBEDTLS_DEBUG_C
+	bool "Enable debugging of TLS communication"
+	depends on MBEDTLS_TLS_LIBRARY
+	help
+	  Enable debugging of TLS communication.
+	  Corresponds to MBEDTLS_DEBUG_C setting in mbed TLS config file.
+
+endmenu
+
 menu "mbed TLS memory configuration"
 
 config MBEDTLS_ENABLE_HEAP

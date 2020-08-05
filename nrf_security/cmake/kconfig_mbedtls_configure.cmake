@@ -284,6 +284,7 @@ kconfig_mbedtls_config_direct("MBEDTLS_X509_USE_C")
 kconfig_mbedtls_config_direct("MBEDTLS_X509_CRT_PARSE_C")
 kconfig_mbedtls_config_direct("MBEDTLS_TIMING_C")
 kconfig_mbedtls_config_direct("MBEDTLS_TIMING_ALT")
+kconfig_mbedtls_config_direct("MBEDTLS_DEBUG_C")
 
 if (CONFIG_CC310_BACKEND)
   set(MBEDTLS_PLATFORM_SETUP_TEARDOWN_ALT TRUE)
