@@ -1978,7 +1978,7 @@
  *
  * This module is used for testing (ssl_client/server).
  */
-//#define MBEDTLS_CERTS_C
+#cmakedefine MBEDTLS_CERTS_C
 
 /**
  * \def MBEDTLS_CHACHA20_C

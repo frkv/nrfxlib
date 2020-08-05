@@ -65,6 +65,16 @@ config MBEDTLS_DEBUG_C
 	  Enable debugging of TLS communication.
 	  Corresponds to MBEDTLS_DEBUG_C setting in mbed TLS config file.
 
+config MBEDTLS_CERTS_C
+	bool "Use test certificates from mbed TLS library"
+	depends on MBEDTLS_X509_LIBRARY
+	select MBEDTLS_ECP_DP_SECP384R1_ENABLED
+	help
+	  Use test certificates from mbed TLS library.
+	  Corresponds to MBEDTLS_CERTS_C setting in mbed TLS config file.
+	  This feature is only intended for debugging. It must not be used in a
+	  production environment.
+
 endmenu
 
 menu "mbed TLS memory configuration"

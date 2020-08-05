@@ -285,6 +285,18 @@ kconfig_mbedtls_config_direct("MBEDTLS_X509_CRT_PARSE_C")
 kconfig_mbedtls_config_direct("MBEDTLS_TIMING_C")
 kconfig_mbedtls_config_direct("MBEDTLS_TIMING_ALT")
 kconfig_mbedtls_config_direct("MBEDTLS_DEBUG_C")
+kconfig_mbedtls_config_direct("MBEDTLS_CERTS_C")
+
+# Show a warning for kconfigs intended for debugging purposes
+
+if (MBEDTLS_CERTS_C)
+  message(WARNING "The following option is enabled: MBEDTLS_CERTS_C
+  Predefined, publicly available certificates intended for testing will be used
+  in the TLS handshake operation.
+  Do not use in production.")
+endif()
+
+# End warnings
 
 if (CONFIG_CC310_BACKEND)
   set(MBEDTLS_PLATFORM_SETUP_TEARDOWN_ALT TRUE)
