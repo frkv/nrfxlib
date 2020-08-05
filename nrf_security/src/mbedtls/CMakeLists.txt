@@ -105,6 +105,11 @@ append_with_prefix(src_tls ${ARM_MBEDTLS_PATH}/library/
     ssl_tls.c
 )
 
+append_with_prefix(src_tls
+  ${NRF_SECURITY_ROOT}/src/mbedtls/
+  timing_alt.c
+)
+
 # ----------  Replacement sources - modified mbedTLS sources  -------------<
 
 nrf_security_debug("Adding replacement files (modified mbed TLS)")

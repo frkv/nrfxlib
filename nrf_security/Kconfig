@@ -43,9 +43,17 @@ config MBEDTLS_TLS_LIBRARY
 	bool
 	prompt "Create mbed TLS transport layer security library"
 	select MBEDTLS_X509_LIBRARY
+	select MBEDTLS_TIMING_C
+	select MBEDTLS_TIMING_ALT
 	help
 	  Create the mbed SSL/TLS library in addition to the mbed crypto
 	  library.
+
+config MBEDTLS_TIMING_C
+	bool
+
+config MBEDTLS_TIMING_ALT
+	bool
 
 menu "mbed TLS memory configuration"
 

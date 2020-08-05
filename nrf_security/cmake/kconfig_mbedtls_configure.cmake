@@ -282,6 +282,8 @@ kconfig_mbedtls_config_direct("MBEDTLS_PK_PARSE_C")
 kconfig_mbedtls_config_direct("MBEDTLS_PK_WRITE_C")
 kconfig_mbedtls_config_direct("MBEDTLS_X509_USE_C")
 kconfig_mbedtls_config_direct("MBEDTLS_X509_CRT_PARSE_C")
+kconfig_mbedtls_config_direct("MBEDTLS_TIMING_C")
+kconfig_mbedtls_config_direct("MBEDTLS_TIMING_ALT")
 
 if (CONFIG_CC310_BACKEND)
   set(MBEDTLS_PLATFORM_SETUP_TEARDOWN_ALT TRUE)
@@ -420,3 +422,13 @@ if (CONFIG_GENERATE_MBEDTLS_CFG_FILE)
 configure_file(${CMAKE_CURRENT_LIST_DIR}/../configs/nrf-config.h.template
                ${config_include}/${CONFIG_MBEDTLS_CFG_FILE})
 endif()
+
+
+#
+# Copy the timing_alt.h, applicable to all backends.
+#
+configure_file_ifdef(CONFIG_MBEDTLS_TIMING_ALT
+  ${NRFXLIB_DIR}/nrf_security/include/timing/timing_alt.h
+  ${generated_include_path}/timing_alt.h
+  COPYONLY
+)
