@@ -1660,6 +1660,9 @@ config MBEDTLS_ENTROPY_MAX_SOURCES
 
 endif # NRF_SECURITY_ADVANCED
 
+comment "PSA Native ITS"
+rsource "src/psa/Kconfig"
+
 endif # NRF_SECURITY_ANY_BACKEND
 
 endif # NORDIC_SECURITY_BACKEND
