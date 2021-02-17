@@ -4,6 +4,29 @@
 # SPDX-License-Identifier: LicenseRef-Nordic-5-Clause
 #
 
+menu "PSA API support"
+
+config MBEDTLS_PSA_CRYPTO_STORAGE_C
+	bool "Enable PSA storage for persistent keys"
+	help
+	  Corresponds to MBEDTLS_PSA_CRYPTO_STORAGE_C setting in mbed TLS config file.
+
+config MBEDTLS_PLATFORM_STD_MEM_HDR
+	string
+	default "<stdlib.h>"
+
+config MBEDTLS_PLATFORM_STD_CALLOC
+	string
+	default "calloc"
+
+config MBEDTLS_PLATFORM_STD_FREE
+	string
+	default "free"
+
+config MBEDTLS_PLATFORM_STD_EXIT
+	string
+	default "exit"
+
 menuconfig PSA_NATIVE_ITS
 	bool "PSA native Internal Trusted Storage"
 	depends on CC310_BACKEND
@@ -47,3 +70,5 @@ source "${ZEPHYR_BASE}/subsys/logging/Kconfig.template.log_config"
 endif # PSA_EITS_BACKEND_ZEPHYR
 
 endif # PSA_NATIVE_ITS
+
+endmenu

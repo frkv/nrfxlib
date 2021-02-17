@@ -38,6 +38,8 @@ set(mbedcrypto_glue_include_path
 set(common_includes
   ${ARM_MBEDTLS_PATH}/include
   ${ARM_MBEDTLS_PATH}/include/mbedtls
+  ${ARM_MBEDTLS_PATH}/include/psa
+  ${ARM_MBEDTLS_PATH}/library
 )
 
 #
@@ -52,4 +54,10 @@ if (CONFIG_NRF_SECURITY_MULTI_BACKEND)
   add_subdirectory(src/mbedcrypto_glue)
 endif()
 
-add_subdirectory_ifdef(CONFIG_PSA_EITS_BACKEND_ZEPHYR src/psa)
+#
+#  Add PSA apis sources
+#
+if (CONFIG_MBEDTLS_PSA_CRYPTO_C)
+  add_subdirectory(src/psa)
+  nrf_security_debug("-------- Adding src/psa")
+endif()

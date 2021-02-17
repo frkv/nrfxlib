@@ -2979,7 +2979,7 @@
  * Requires: MBEDTLS_CTR_DRBG_C, MBEDTLS_ENTROPY_C
  *
  */
-// #define MBEDTLS_PSA_CRYPTO_C
+#cmakedefine MBEDTLS_PSA_CRYPTO_C
 
 /**
  * \def MBEDTLS_PSA_CRYPTO_SE_C
@@ -3008,7 +3008,7 @@
  *           either MBEDTLS_PSA_ITS_FILE_C or a native implementation of
  *           the PSA ITS interface
  */
-//#define MBEDTLS_PSA_CRYPTO_STORAGE_C
+#cmakedefine MBEDTLS_PSA_CRYPTO_STORAGE_C
 
 /**
  * \def MBEDTLS_PSA_ITS_FILE_C
@@ -3402,10 +3402,10 @@ it is (2^48 - 1), our restriction is :  (int - 0xFFFF - 0xF).*/
 //#define MBEDTLS_MEMORY_ALIGN_MULTIPLE      4 /**< Align on multiples of this value */
 
 /* Platform options */
-//#define MBEDTLS_PLATFORM_STD_MEM_HDR   <stdlib.h> /**< Header to include if MBEDTLS_PLATFORM_NO_STD_FUNCTIONS is defined. Don't define if no header is needed. */
-//#define MBEDTLS_PLATFORM_STD_CALLOC        calloc /**< Default allocator to use, can be undefined */
-//#define MBEDTLS_PLATFORM_STD_FREE            free /**< Default free to use, can be undefined */
-//#define MBEDTLS_PLATFORM_STD_EXIT            exit /**< Default exit to use, can be undefined */
+#cmakedefine MBEDTLS_PLATFORM_STD_MEM_HDR   @MBEDTLS_PLATFORM_STD_MEM_HDR@ /**< Header to include if MBEDTLS_PLATFORM_NO_STD_FUNCTIONS is defined. Don't define if no header is needed. */
+#cmakedefine MBEDTLS_PLATFORM_STD_CALLOC    @MBEDTLS_PLATFORM_STD_CALLOC@  /**< Default allocator to use, can be undefined */
+#cmakedefine MBEDTLS_PLATFORM_STD_FREE      @MBEDTLS_PLATFORM_STD_FREE@    /**< Default free to use, can be undefined */
+#cmakedefine MBEDTLS_PLATFORM_STD_EXIT      @MBEDTLS_PLATFORM_STD_EXIT@    /**< Default exit to use, can be undefined */
 //#define MBEDTLS_PLATFORM_STD_TIME            time /**< Default time to use, can be undefined. MBEDTLS_HAVE_TIME must be enabled */
 //#define MBEDTLS_PLATFORM_STD_FPRINTF      fprintf /**< Default fprintf to use, can be undefined */
 //#define MBEDTLS_PLATFORM_STD_PRINTF        printf /**< Default printf to use, can be undefined */
