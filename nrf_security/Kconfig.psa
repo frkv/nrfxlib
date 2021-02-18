@@ -29,7 +29,6 @@ config MBEDTLS_PLATFORM_STD_EXIT
 
 menuconfig PSA_NATIVE_ITS
 	bool "PSA native Internal Trusted Storage"
-	depends on CC310_BACKEND
 
 if PSA_NATIVE_ITS
 
