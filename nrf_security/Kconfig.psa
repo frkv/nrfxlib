@@ -6,31 +6,25 @@
 
 menu "PSA API support"
 
+config MBEDTLS_PSA_CRYPTO_SPM
+	bool
+	help
+	  Configation that enables alternate naming of mbedcrypto symbols in
+	  scope of TF-M build (Prefixes with mbedcrypto__)
+
 config MBEDTLS_PSA_CRYPTO_STORAGE_C
 	bool "Enable PSA storage for persistent keys"
+	default Y if BUILD_WITH_TFM
 	help
 	  Corresponds to MBEDTLS_PSA_CRYPTO_STORAGE_C setting in mbed TLS config file.
 
 config MBEDTLS_USE_PSA_CRYPTO
 	bool "Use PSA APIs for X.509 and TLS library"
+	default Y if BUILD_WITH_TFM
+	select NRF_SECURITY_ADVANCED
+	select MBEDTLS_PK_WRITE_C
 	help
 	  Corresponds to MBEDTLS_USE_PSA_CRYPTO setting in mbed TLS config file.
-
-config MBEDTLS_PLATFORM_STD_MEM_HDR
-	string
-	default "<stdlib.h>"
-
-config MBEDTLS_PLATFORM_STD_CALLOC
-	string
-	default "calloc"
-
-config MBEDTLS_PLATFORM_STD_FREE
-	string
-	default "free"
-
-config MBEDTLS_PLATFORM_STD_EXIT
-	string
-	default "exit"
 
 menuconfig PSA_NATIVE_ITS
 	bool "PSA native Internal Trusted Storage"

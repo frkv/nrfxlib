@@ -163,8 +163,13 @@ kconfig_mbedtls_config("MBEDTLS_SSL_CLI_C")
 #
 if (CONFIG_CC3XX_BACKEND)
   set(MBEDTLS_PLATFORM_ZEROIZE_ALT TRUE)
-  set(MBEDTLS_THREADING_C TRUE)
-  set(MBEDTLS_THREADING_ALT TRUE)
+  if(NOT DEFINED MBEDTLS_THREADING_C)
+    set(MBEDTLS_THREADING_C TRUE)
+  endif()
+
+  if(NOT DEFINED MBEDTLS_THREADING_ALT)
+    set(MBEDTLS_THREADING_ALT TRUE)
+  endif()
 endif()
 
 #
@@ -421,8 +426,6 @@ set(generated_includes
   ${config_include}
   ${generated_include_path}
 )
-
-zephyr_include_directories(${generated_includes})
 
 #
 # Generate the mbed TLS config files

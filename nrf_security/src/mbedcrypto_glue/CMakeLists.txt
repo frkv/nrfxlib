@@ -11,15 +11,15 @@ nrf_security_debug("######### Creating mbedcrypto glue library #########")
 #
 add_library(mbedcrypto_common_glue INTERFACE)
 
-target_include_directories(mbedcrypto_common_glue INTERFACE
-  ${NRF_SECURITY_ROOT}/include/mbedcrypto_glue
+target_include_directories(mbedcrypto_common_glue
+  INTERFACE
+    ${NRF_SECURITY_ROOT}/include/mbedcrypto_glue
+    $<TARGET_PROPERTY:${mbedcrypto_target},INTERFACE_INCLUDE_DIRECTORIES>
 )
 
 target_compile_definitions(mbedcrypto_common_glue INTERFACE
   -DMBEDTLS_CONFIG_FILE="${CONFIG_MBEDTLS_CFG_FILE}"
 )
-
-target_link_libraries(mbedcrypto_common_glue INTERFACE mbedtls_common)
 
 #
 # Create glue libraries for backends (if enabled)

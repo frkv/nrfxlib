@@ -1258,7 +1258,7 @@
  * Note that this option is meant for internal use only and may be removed
  * without notice.
  */
-//#define MBEDTLS_PSA_CRYPTO_KEY_FILE_ID_ENCODES_OWNER
+#define MBEDTLS_PSA_CRYPTO_KEY_FILE_ID_ENCODES_OWNER
 
 /**
  * \def MBEDTLS_MEMORY_DEBUG
@@ -1328,7 +1328,7 @@
  * Requires: MBEDTLS_PSA_CRYPTO_C
  *
  */
-//#define MBEDTLS_PSA_CRYPTO_SPM
+#cmakedefine MBEDTLS_PSA_CRYPTO_SPM
 
 /**
  * \def MBEDTLS_PSA_INJECT_ENTROPY

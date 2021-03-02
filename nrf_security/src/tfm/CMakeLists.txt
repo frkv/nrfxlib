@@ -5,15 +5,7 @@
 #
 
 #
-# Add mbedcrypto, mbedx509 and mbedtls as dependencies for
-# TF-M
+# Add an alias library pointing to prefixed mbedcrypto
+# This alias is used to link directly to the library in case of a
+# TF-M build
 #
-add_dependencies(tfm mbedcrypto)
-
-if (TARGET mbedx509)
-  add_dependencies(tfm mbedx509)
-endif()
-
-if (TARGET mbedtls)
-  add_dependencies(tfm mbedtls)
-endif()

@@ -46,6 +46,7 @@ append_with_prefix(src_crypto ${ARM_MBEDTLS_PATH}/library/
     cipher_wrap.c
     ctr_drbg.c
     des.c
+    debug.c
     entropy.c
     entropy_poll.c
     error.c
@@ -68,12 +69,22 @@ append_with_prefix(src_crypto ${ARM_MBEDTLS_PATH}/library/
     pkwrite.c
     platform.c
     platform_util.c
+    psa_crypto_slot_management.c
+    psa_crypto_storage.c
     ripemd160.c
     timing.c
     version.c
     version_features.c
     xtea.c
 )
+
+# The TF-M build needs a standard version of memory_buffer_alloc.c
+# This currently doesn't do a mutex on heap access according to cc3xx rtos
+# methods...
+if(BUILD_TFM)
+  list(APPEND src_crypto ${ARM_MBEDTLS_PATH}/library/memory_buffer_alloc.c)
+endif()
+
 
 nrf_security_debug("Creating list of files for x509 lib")
 #
@@ -87,16 +98,19 @@ append_with_prefix(src_x509 ${ARM_MBEDTLS_PATH}/library/
     x509_crl.c
     x509_crt.c
     x509_csr.c
-    x509write_crt.c
-    x509write_csr.c
 )
+
+if(NOT CONFIG_BUILD_WITH_TFM)
+  list(APPEND src_x509
+    ${ARM_MBEDTLS_PATH}/library/x509write_csr.c
+  )
+endif()
 
 nrf_security_debug("Creating list of files for TLS lib")
 #
 # TLS files
 #
 append_with_prefix(src_tls ${ARM_MBEDTLS_PATH}/library/
-    debug.c
     net_sockets.c
     ssl_cache.c
     ssl_cli.c
@@ -114,7 +128,7 @@ nrf_security_debug("Adding replacement files (modified mbed TLS)")
 append_with_prefix(src_crypto_replacement
   ${NRF_SECURITY_ROOT}/src/mbedtls/replacements/
   pem.c
-  memory_buffer_alloc.c
+  psa_crypto.c
 )
 
 append_with_prefix(src_tls_replacement
@@ -122,64 +136,60 @@ append_with_prefix(src_tls_replacement
   ssl_ciphersuites.c
 )
 
-zephyr_include_directories(${common_includes})
+if(NOT CONFIG_BUILD_WITH_TFM)
+  #
+  # Creating prerequisites for mbedcrypto
+  #
+  # This configures:
+  # - mbedcrypto_xxxx backends (is enabled)
+  # - mbedcrypto_base_vanilla - All files not in any backend
+  #
 
-#
-# Creating prerequisites for mbedcrypto
-#
-# This configures:
-# - mbedcrypto_xxxx backends (is enabled)
-# - mbedcrypto_base_vanilla - All files not in any backend
-#
+  #
+  # Create mbedcrypto_shared (noglue) library
+  #
+  nrf_security_debug("-------- Adding src/mbedtls/shared")
+  add_subdirectory(shared)
 
-#
-# Create mbedcrypto_shared (noglue) library
-#
-nrf_security_debug("-------- Adding src/mbedtls/shared")
-add_subdirectory(shared)
+  #
+  # Create mbedcrypto_cc3xx (noglue) library
+  #
+  if (CONFIG_CC3XX_BACKEND)
+    nrf_security_debug("-------- Adding src/mbedtls/cc310")
+    add_subdirectory(cc310)
+  endif()
 
-#
-# Create mbedcrypto_cc3xx (noglue) library
-#
-if (CONFIG_CC3XX_BACKEND)
-  nrf_security_debug("-------- Adding src/mbedtls/cc310")
-  add_subdirectory(cc310)
-  list(APPEND cmake_directories cc310)
-endif()
+  #
+  # Create mbedcrypto_oberon (noglue) library
+  #
+  if (CONFIG_OBERON_BACKEND)
+    nrf_security_debug("-------- Adding src/mbedtls/oberon")
+    add_subdirectory(oberon)
+  endif()
 
-#
-# Create mbedcrypto_oberon (noglue) library
-#
-if (CONFIG_OBERON_BACKEND)
-  nrf_security_debug("-------- Adding src/mbedtls/oberon")
-  add_subdirectory(oberon)
-  list(APPEND cmake_directories oberon)
-endif()
+  #
+  # Create mbedcrypto_vanilla (noglue) library
+  #
+  if (CONFIG_MBEDTLS_VANILLA_BACKEND)
+    nrf_security_debug("-------- Adding src/mbedtls/vanilla")
+    add_subdirectory(vanilla)
+  endif()
 
-#
-# Create mbedcrypto_vanilla (noglue) library
-#
-if (CONFIG_MBEDTLS_VANILLA_BACKEND)
-  nrf_security_debug("-------- Adding src/mbedtls/vanilla")
-  add_subdirectory(vanilla)
-  list(APPEND cmake_directories vanilla)
-endif()
-
-#
-# Add mbedcrypto_base_vanilla for everything that is not in a backend
-#
-nrf_security_library(BASE mbedcrypto_base_vanilla
-  FILES
-    ${src_crypto}
-    ${src_crypto_replacement}
-  LINK_LIBRARIES
-    mbedtls_common
-    $<TARGET_NAME_IF_EXISTS:mbedcrypto_shared>
-)
-
-# Consider: Move this knowledge out of here.
-if (CONFIG_NRF_SECURITY_MULTI_BACKEND)
-  list(APPEND cmake_directories ../mbedcrypto_glue)
+  #
+  # Add mbedcrypto_base_vanilla for everything that is not in a backend
+  #
+  nrf_security_library(BASE mbedcrypto_base_vanilla
+    FILES
+      ${src_crypto}
+      ${src_crypto_replacement}
+    INCLUDES
+      $<TARGET_PROPERTY:${mbedcrypto_target},INTERFACE_INCLUDE_DIRECTORIES>
+    DEFINES
+      $<TARGET_PROPERTY:${mbedcrypto_target},INTERFACE_COMPILE_DEFINITIONS>
+    LINK_LIBRARIES
+      $<TARGET_NAME_IF_EXISTS:mbedcrypto_shared>
+      $<GENEX_EVAL:$<TARGET_PROPERTY:${mbedcrypto_target},PRIVATE_LINK_LIBRARIES>>
+  )
 endif()
 
 #
@@ -193,10 +203,7 @@ if (CONFIG_MBEDTLS_X509_LIBRARY)
   # Add options from Zephyr build
   nrf_security_add_zephyr_options(mbedx509)
 
-  target_link_libraries(mbedx509 PRIVATE
-    mbedtls_common
-    mbedcrypto_static_alias
-  )
+  target_link_libraries(mbedx509 PRIVATE ${mbedcrypto_target})
 
 endif()
 
@@ -212,9 +219,6 @@ if (CONFIG_MBEDTLS_TLS_LIBRARY)
   # Add options from Zephyr build
   nrf_security_add_zephyr_options(mbedtls)
 
-  target_link_libraries(mbedtls PRIVATE
-    mbedtls_common
-    mbedcrypto_static_alias
-  )
+  target_link_libraries(mbedtls PRIVATE ${mbedcrypto_target})
 
 endif()

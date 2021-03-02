@@ -13,14 +13,21 @@
 # C flags/Linker flags
 #
 macro(nrf_security_add_zephyr_options lib_name)
-  # Add compile options and includes from zephyr
-  target_compile_options(${lib_name} PRIVATE $<TARGET_PROPERTY:zephyr_interface,INTERFACE_COMPILE_OPTIONS>)
-  target_include_directories(${lib_name} PRIVATE $<TARGET_PROPERTY:zephyr_interface,INTERFACE_INCLUDE_DIRECTORIES>)
-  target_include_directories(${lib_name} PRIVATE $<TARGET_PROPERTY:zephyr_interface,INTERFACE_SYSTEM_INCLUDE_DIRECTORIES>)
+  if(TARGET zephyr_interface)
+    # Add compile options and includes from zephyr
+    target_compile_options(${lib_name} PRIVATE $<TARGET_PROPERTY:zephyr_interface,INTERFACE_COMPILE_OPTIONS>)
+    target_include_directories(${lib_name} PRIVATE $<TARGET_PROPERTY:zephyr_interface,INTERFACE_INCLUDE_DIRECTORIES>)
+    target_include_directories(${lib_name} PRIVATE $<TARGET_PROPERTY:zephyr_interface,INTERFACE_SYSTEM_INCLUDE_DIRECTORIES>)
 
-  # Unsure if these are needed any more
-  target_compile_options(${lib_name} PRIVATE ${TOOLCHAIN_C_FLAGS})
-  target_ld_options(${lib_name} PRIVATE ${TOOLCHAIN_LD_FLAGS})
+    # Unsure if these are needed any more
+    target_compile_options(${lib_name} PRIVATE ${TOOLCHAIN_C_FLAGS})
+    target_ld_options(${lib_name} PRIVATE ${TOOLCHAIN_LD_FLAGS})
+  else()
+    target_compile_options(${lib_name} PRIVATE "SHELL: -imacros ${ZEPHYR_AUTOCONF}")
+    target_include_directories(${lib_name} PRIVATE
+      $<$<TARGET_EXISTS:platform_cc3xx>:$<TARGET_PROPERTY:platform_cc3xx,INTERFACE_INCLUDE_DIRECTORIES>>
+    )
+  endif()
 endmacro()
 
 #
@@ -283,10 +290,8 @@ function(nrf_security_library)
 
   # Add the standard includes for this library
   target_include_directories(${lib_name} PRIVATE
-      ${common_includes}
-      ${config_include}
-      $<$<TARGET_EXISTS:platform_cc3xx>:${mbedcrypto_glue_include_path}/threading>
-      $<$<TARGET_EXISTS:platform_cc3xx>:$<TARGET_PROPERTY:platform_cc3xx,INTERFACE_INCLUDE_DIRECTORIES>>
+    # All includes from `mbedcrypto_target` except `generated` includes.
+    $<FILTER:$<TARGET_PROPERTY:${mbedcrypto_target},INTERFACE_INCLUDE_DIRECTORIES>,EXCLUDE,mbedtls_generated>
   )
 
   # Add defines (if set)
@@ -462,10 +467,8 @@ function(nrf_security_library_shared)
   target_ld_options(${LIB_NAME} PRIVATE ${TOOLCHAIN_LD_FLAGS})
 
   target_include_directories(${LIB_NAME} PRIVATE
-      ${common_includes}
-      ${config_include}
-      $<$<TARGET_EXISTS:platform_cc3xx>:${mbedcrypto_glue_include_path}/threading>
-      $<$<TARGET_EXISTS:platform_cc3xx>:$<TARGET_PROPERTY:platform_cc3xx,INTERFACE_INCLUDE_DIRECTORIES>>
+    # All includes from `mbedcrypto_target` except `generated` includes.
+    $<FILTER:$<TARGET_PROPERTY:${mbedcrypto_target},INTERFACE_INCLUDE_DIRECTORIES>,EXCLUDE,mbedtls_generated>
   )
 
   # Use configurations for vanilla as shared will always need configurations

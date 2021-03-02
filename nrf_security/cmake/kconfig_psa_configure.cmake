@@ -11,6 +11,7 @@
 # Enabling core functionality
 #
 kconfig_mbedtls_config("MBEDTLS_PSA_CRYPTO_C")
+kconfig_mbedtls_config("MBEDTLS_PSA_CRYPTO_SPM")
 kconfig_mbedtls_config("MBEDTLS_PSA_CRYPTO_STORAGE_C")
 kconfig_mbedtls_config("MBEDTLS_USE_PSA_CRYPTO")
 
@@ -18,4 +19,3 @@ kconfig_mbedtls_config_val("MBEDTLS_PLATFORM_STD_MEM_HDR"	"${CONFIG_MBEDTLS_PLAT
 kconfig_mbedtls_config_val("MBEDTLS_PLATFORM_STD_CALLOC"	"${CONFIG_MBEDTLS_PLATFORM_STD_CALLOC}")
 kconfig_mbedtls_config_val("MBEDTLS_PLATFORM_STD_FREE"	"${CONFIG_MBEDTLS_PLATFORM_STD_FREE}")
 kconfig_mbedtls_config_val("MBEDTLS_PLATFORM_STD_EXIT"	"${CONFIG_MBEDTLS_PLATFORM_STD_EXIT}")
-
