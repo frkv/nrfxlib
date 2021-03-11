@@ -64,11 +64,13 @@ target_include_directories(${mbedcrypto_target} INTERFACE
     ${generated_includes}
 )
 
-target_compile_definitions(${mbedcrypto_target}
-  INTERFACE
-    -DMBEDTLS_CONFIG_FILE="${CONFIG_MBEDTLS_CFG_FILE}"
-    PSA_CRYPTO_SECURE
-)
+if (NOT ${PROJECT_NAME} STREQUAL "Bootloader")
+  target_compile_definitions(${mbedcrypto_target}
+    INTERFACE
+      -DMBEDTLS_CONFIG_FILE="${CONFIG_MBEDTLS_CFG_FILE}"
+      PSA_CRYPTO_SECURE
+  )
+endif()
 
 if(TARGET platform_cc3xx)
   target_link_libraries(${mbedcrypto_target} PRIVATE platform_cc3xx)

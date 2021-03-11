@@ -46,6 +46,13 @@ set(CONFIG_NRF_CC3XX_PLATFORM True)
 # complete build with all libraries and a full mbedcrypto library for linking.
 set(CONFIG_BUILD_WITH_TFM False)
 
+
+if (${PROJECT_NAME} STREQUAL "Bootloader")
+  set(CONFIG_CC3XX_MBEDTLS_RSA_C True)
+  set(CONFIG_MBEDTLS_RSA_C True)
+  set(CONFIG_MBEDTLS_PKCS1_V21 True)
+endif()
+
 # The TF-M build needs a standard version of memory_buffer_alloc.c
 # This currently doesn't do a mutex on heap access according to cc3xx rtos
 # methods...
