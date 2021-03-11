@@ -34,8 +34,8 @@ nrf_security_library(NOGLUE cc3xx
 #
 # Create the mbedcrypto library for cc3xx backend
 #
-add_library(mbedcrypto_cc3xx INTERFACE)
-target_link_libraries(mbedcrypto_cc3xx INTERFACE
+add_library(${mbedcrypto_target}_cc3xx INTERFACE)
+target_link_libraries(${mbedcrypto_target}_cc3xx INTERFACE
                       mbedcrypto_cc3xx_imported
 )
 

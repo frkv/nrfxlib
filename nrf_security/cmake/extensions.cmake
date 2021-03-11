@@ -232,7 +232,7 @@ function(nrf_security_library)
 
   # Resolve library name, backend name, and set library type.
   if(DEFINED LIBRARY_NOGLUE)
-    set(lib_name mbedcrypto_${LIBRARY_NOGLUE}_noglue)
+    set(lib_name ${mbedcrypto_target}_${LIBRARY_NOGLUE}_noglue)
     set(backend_name ${LIBRARY_NOGLUE})
   elseif(DEFINED LIBRARY_BASE)
     set(lib_name ${LIBRARY_BASE})
@@ -328,10 +328,10 @@ function(nrf_security_library_glue)
   set(sources "")
 
   if(GLUE_LIB_ALT)
-    set(lib_name mbedcrypto_glue)
+    set(lib_name ${mbedcrypto_target}_glue)
     set(backend_name dummy)
   else()
-    set(lib_name mbedcrypto_glue_${GLUE_LIB_BACKEND})
+    set(lib_name ${mbedcrypto_target}_glue_${GLUE_LIB_BACKEND})
     set(backend_name ${GLUE_LIB_BACKEND})
     string(TOUPPER ${GLUE_LIB_BACKEND} BACKEND_UPPER)
   endif()
@@ -549,7 +549,7 @@ function(nrf_security_target_embed_libraries)
       set(strip_command COMMAND ${CMAKE_COMMAND} -E remove ${strip_list})
     endif()
 
-    add_custom_target(${target}_extract
+    add_custom_target(${SEC_LIBS_TARGET}_${target}_extract
       COMMAND ${CMAKE_AR} x ${imported_library_location}
       ${strip_command}
       WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/objects/${backend_name}
@@ -557,7 +557,7 @@ function(nrf_security_target_embed_libraries)
       COMMAND_EXPAND_LISTS
     )
 
-    list(APPEND dep_list ${target}_extract)
+    list(APPEND dep_list ${SEC_LIBS_TARGET}_${target}_extract)
     list(APPEND archive ${CMAKE_CURRENT_BINARY_DIR}/objects/${backend_name})
   endforeach()
 

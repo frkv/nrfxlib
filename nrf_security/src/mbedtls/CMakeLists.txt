@@ -178,7 +178,7 @@ if(NOT CONFIG_BUILD_WITH_TFM)
   #
   # Add mbedcrypto_base_vanilla for everything that is not in a backend
   #
-  nrf_security_library(BASE mbedcrypto_base_vanilla
+  nrf_security_library(BASE ${mbedcrypto_target}_base_vanilla
     FILES
       ${src_crypto}
       ${src_crypto_replacement}
@@ -187,7 +187,7 @@ if(NOT CONFIG_BUILD_WITH_TFM)
     DEFINES
       $<TARGET_PROPERTY:${mbedcrypto_target},INTERFACE_COMPILE_DEFINITIONS>
     LINK_LIBRARIES
-      $<TARGET_NAME_IF_EXISTS:mbedcrypto_shared>
+      $<TARGET_NAME_IF_EXISTS:${mbedcrypto_target}_shared>
       $<GENEX_EVAL:$<TARGET_PROPERTY:${mbedcrypto_target},PRIVATE_LINK_LIBRARIES>>
   )
 endif()
@@ -196,14 +196,14 @@ endif()
 # Library for x.509
 #
 if (CONFIG_MBEDTLS_X509_LIBRARY)
-  add_library(mbedx509 STATIC
+  add_library(${MBEDTLS_TARGET_PREFIX}mbedx509 STATIC
     ${src_x509}
   )
 
   # Add options from Zephyr build
-  nrf_security_add_zephyr_options(mbedx509)
+  nrf_security_add_zephyr_options(${MBEDTLS_TARGET_PREFIX}mbedx509)
 
-  target_link_libraries(mbedx509 PRIVATE ${mbedcrypto_target})
+  target_link_libraries(${MBEDTLS_TARGET_PREFIX}mbedx509 PRIVATE ${mbedcrypto_target})
 
 endif()
 
@@ -211,14 +211,14 @@ endif()
 # Library for TLS support
 #
 if (CONFIG_MBEDTLS_TLS_LIBRARY)
-  add_library(mbedtls STATIC
+  add_library(${MBEDTLS_TARGET_PREFIX}mbedtls STATIC
     ${src_tls}
     ${src_tls_replacement}
   )
 
   # Add options from Zephyr build
-  nrf_security_add_zephyr_options(mbedtls)
+  nrf_security_add_zephyr_options(${MBEDTLS_TARGET_PREFIX}mbedtls)
 
-  target_link_libraries(mbedtls PRIVATE ${mbedcrypto_target})
+  target_link_libraries(${MBEDTLS_TARGET_PREFIX}mbedtls PRIVATE ${mbedcrypto_target})
 
 endif()

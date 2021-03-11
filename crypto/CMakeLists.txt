@@ -4,6 +4,8 @@
 # SPDX-License-Identifier: LicenseRef-Nordic-5-Clause
 #
 
+include_guard(GLOBAL)
+
 nrfxlib_calculate_lib_path(lib_path)
 
 add_library(nrfxlib_crypto INTERFACE)

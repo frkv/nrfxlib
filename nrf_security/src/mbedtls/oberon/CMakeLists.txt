@@ -42,9 +42,9 @@ nrf_security_library(NOGLUE oberon
     -DMBEDTLS_CONFIG_FILE="nrf-config-noglue-oberon.h"
 )
 
-add_library(mbedcrypto_oberon INTERFACE)
-target_link_libraries(mbedcrypto_oberon INTERFACE
-                      mbedcrypto_oberon_mbedtls_imported
+add_library(${mbedcrypto_target}_oberon INTERFACE)
+target_link_libraries(${mbedcrypto_target}_oberon INTERFACE
+                      ${mbedcrypto_target}_oberon_mbedtls_imported
                       mbedcrypto_oberon_imported
 )
 
