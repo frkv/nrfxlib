@@ -4,6 +4,7 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-5-Clause
  */
 
+
 /**@file
  * @defgroup ocrypto_chacha ChaCha20 APIs
  * @ingroup ocrypto_chacha_poly
@@ -78,11 +79,13 @@ typedef struct {
  * The generator state @p ctx is initialized by this function.
  *
  * @param[out] ctx   Encoder state.
- * @param      n     Nonce.
+ * @param      n     Nonce. May be NULL.
  * @param      n_len Nonce length. 0 <= @p n_len <= @c ocrypto_chacha20_NONCE_BYTES_MAX.
- * @param      key   Authentication key.
+ * @param      key   Authentication key. May be NULL.
  * @param      count Initial block counter, usually 0 or 1.
  *
+ * @remark If @p key is NULL only @p n and @p count are set. If @p n is NULL only @p key is set.
+           Both @p key and @p n must be set before update is called.
  * @remark When reusing an encryption key @p key for a different message, a
  *         different nonce @p n or initial block counter @p count must be used.
  */

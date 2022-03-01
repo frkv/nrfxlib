@@ -4,9 +4,14 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-5-Clause
  */
 
+ * Copyright (c) 2022 Nordic Semiconductor ASA
+ *
+ * SPDX-License-Identifier: LicenseRef-Nordic-5-Clause
+ */
+
 /**@file
- * @defgroup ocrypto_p256 ECC secp256r1 low-level APIs
- * @ingroup ocrypto
+ * @defgroup nrf_oberon_p256 ECC secp256r1 low-level APIs
+ * @ingroup nrf_oberon
  * @{
  * @brief Type declarations and APIs for low-level elliptic curve point operations
  * based on the NIST secp256r1 curve.

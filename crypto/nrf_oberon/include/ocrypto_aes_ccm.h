@@ -4,6 +4,7 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-5-Clause
  */
 
+
 /**@file
  * @defgroup ocrypto_aes AES - Advanced Encryption Standard APIs
  * @ingroup ocrypto
@@ -12,7 +13,7 @@
  * AES transfers a 128-bit block of data into an encrypted block of the same size.
  * @}
  *
- * @defgroup ocrypto_aes_ccm AES-CCM - Counter mode with CBC-MAC
+ * @defgroup ocrypto_aes_ccm AES-CCM - AES Counter mode with CBC-MAC
  * @ingroup ocrypto_aes
  * @{
  * @brief Type definitions and APIs for AES-CCM (AES Counter mode with CBC-MAC).
@@ -60,16 +61,19 @@ typedef struct {
 /**
  * AES-CCM initialization.
  *
- * The context @p ctx is initialized using the given key @p key.
+ * The context @p ctx is initialized using the given key @p key and nonce @p nonce.
  *
  * @param[out] ctx     Context.
- * @param      key     AES key.
+ * @param      key     AES key. May be NULL.
  * @param      size    Key size (16, 24, or 32 bytes).
- * @param      nonce   Nonce.
+ * @param      nonce   Nonce. May be NULL.
  * @param      n_len   Nonce length, 7 <= @p n_len <= 13.
  * @param      tag_len Tag length (4, 6, 8, 10, 12, 14, or 16).
  * @param      pt_len  Plaintext length, 0 <= @p pt_len < 2^(8*(15-n_len)).
  * @param      aa_len  Additional authentication data length.
+ *
+ * @remark If @p key is NULL only @p nonce and lengths are set. If @p nonce is NULL only @p key is set.
+           Both @p key and @p nonce must be set before update is called.
  */
 void ocrypto_aes_ccm_init(ocrypto_aes_ccm_ctx *ctx, const uint8_t *key, size_t size,
                           const uint8_t *nonce, size_t n_len, size_t tag_len, size_t pt_len, size_t aa_len);
@@ -84,7 +88,7 @@ void ocrypto_aes_ccm_init(ocrypto_aes_ccm_ctx *ctx, const uint8_t *key, size_t s
  *
  * @param      ctx    Generator state.
  * @param      aa     Additional authenticated data.
- * @param      aa_len Length of @p aa.
+ * @param      aa_len Length of @p a.
  *
  * @remark Initialization of the context @p ctx through
  *         @c ocrypto_aes_ccm_init is required before this function can be called.
@@ -105,7 +109,7 @@ void ocrypto_aes_ccm_update_aad(ocrypto_aes_ccm_ctx *ctx, const uint8_t *aa, siz
  * @param      pt     Plaintext.
  * @param      pt_len Length of @p pt and @p ct.
  *
- * @remark @p ct and @p pt can point to the same address.
+ * @remark @p ct may be same as @p pt.
  * @remark Initialization of the context @p ctx through
  *         @c ocrypto_aes_ccm_init is required before this function can be called.
  */
@@ -123,7 +127,7 @@ void ocrypto_aes_ccm_update_enc(ocrypto_aes_ccm_ctx *ctx, uint8_t* ct, const uin
  * @param      ct     Ciphertext.
  * @param      ct_len Length of @p ct and @p pt.
  *
- * @remark @p ct and @p pt can point to the same address.
+ * @remark @p ct may be same as @p pt.
  * @remark Initialization of the context @p ctx through
  *         @c ocrypto_aes_ccm_init is required before this function can be called.
  */

@@ -4,6 +4,7 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-5-Clause
  */
 
+
 /**@file
  * @defgroup ocrypto_aes AES - Advanced Encryption Standard APIs
  * @ingroup ocrypto
@@ -12,7 +13,7 @@
  * AES transfers a 128-bit block of data into an encrypted block of the same size.
  * @}
  *
- * @defgroup ocrypto_aes_eax AES-EAX APIs
+ * @defgroup ocrypto_aes_eax AES-EAX - AES Encrypt-then-authenticate-then-translate
  * @ingroup ocrypto_aes
  * @{
  * @brief Type definitions and APIS for AES-EAX (Encrypt-then-authenticate-then-translate)
