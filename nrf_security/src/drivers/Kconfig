@@ -54,7 +54,7 @@ endif # PSA_CRYPTO_DRIVER_CC3XX
 menuconfig PSA_CRYPTO_DRIVER_OBERON
     bool
     prompt "PSA Oberon Driver" if !PSA_PROMPTLESS
-    default y #if !CRYPTOCELL_USABLE
+    default y if PSA_WANT_ALG_SHA_384 || PSA_WANT_ALG_SHA_512
     select NRF_OBERON
 	help
 	  Enable PSA Driver for nrf_oberon
