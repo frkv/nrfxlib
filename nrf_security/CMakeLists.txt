@@ -72,6 +72,7 @@ else()
   # OBERON_BACKEND (enabled by default).
 
   get_cmake_property(all_vars VARIABLES)
+  set(CONFIG_MBEDTLS_PSA_CRYPTO_C               False)
 
   # 1. Enable OBERON_BACKEND, disable CC3XX_BACKEND
   set(CONFIG_NRF_OBERON                         True)
