@@ -36,7 +36,7 @@ extern "C"
  * mbedtls_entropy_context and mbedtls_hmac_drbg_context in Arm CryptoCell
  * code base which is sized differently than in vanilla mbed TLS software.
  */
-#define NRF_CC3XX_PLATFORM_HMAC_CTX_SIZE_WORDS (145)
+#define NRF_CC3XX_PLATFORM_HMAC_CTX_SIZE_WORDS (147)
 
 /**@brief Opaque type for the context required for hmac_drbg generation
  *

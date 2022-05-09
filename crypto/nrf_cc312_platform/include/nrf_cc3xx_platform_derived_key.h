@@ -17,27 +17,30 @@
 
 /** @brief Enum with the encryption/decryption algorithms supported with derived keys */
 typedef enum {
-    ALG_AES_128_BIT           = 1,
-    ALG_AES_256_BIT           = 2,
-    ALG_CHACHAPOLY_256_BIT    = 3
+    ALG_AES_128_BIT         = 1,
+    ALG_AES_256_BIT         = 2,
+    ALG_CHACHA20_256_BIT    = 3,
+    ALG_CHACHAPOLY_256_BIT  = 3
 } nrf_cc3xx_platform_cipher_info_t;
 
 /** @brief Structure containing information for doing the key derivation using AES CMAC */
 typedef struct{
-    uint32_t            slot_id;    /**<  The slot id containing the AES key used in the derivation process. */
-    size_t              key_size;   /**<  The size of the AES key in bits. */
-    const uint8_t     * label;      /**<  Buffer containing the label used in the derivation process. */
-    size_t              label_size; /**<  The size of the label in bytes. */
+    uint32_t            slot_id;        /**< The slot id containing the AES key used in the derivation process. */
+    size_t              key_size;       /**< The size of the AES key in bits. */
+    const uint8_t     * label;          /**< Buffer containing the label used in the derivation process. */
+    size_t              label_size;     /**< The size of the label in bytes. */
+    const uint8_t     * context;        /**< Buffer containing the context used in the derivation process. */
+    size_t              context_size;   /**< The size of the context in bytes. */
 } nrf_cc3xx_platform_derivation_info_t;
 
 /** @brief Authenticated encryption/decryption info */
 typedef struct{
-    const uint8_t     * nonce;      /**<  Buffer containing the nonce used in the authenticated encryption/decryption. */
-    size_t              nonce_size; /**<  The nonce size in bytes. */
-    const uint8_t     * aad;        /**<  Buffer containing the additional data used in the authenticated encryption/decryption. */
-    size_t              aad_size;   /**<  The additional data size in bytes. */
-    uint8_t           * tag;        /**<  Buffer containing the authentication tag. */
-    size_t              tag_size;   /**<  The tag size in bytes. */
+    const uint8_t     * nonce;      /**< Buffer containing the nonce used in the authenticated encryption/decryption. */
+    size_t              nonce_size; /**< The nonce size in bytes. */
+    const uint8_t     * aad;        /**< Buffer containing the additional data used in the authenticated encryption/decryption. */
+    size_t              aad_size;   /**< The additional data size in bytes. */
+    uint8_t           * tag;        /**< Buffer containing the authentication tag. */
+    size_t              tag_size;   /**< The tag size in bytes. */
 
 } nrf_cc3xx_platform_auth_info_t;
 

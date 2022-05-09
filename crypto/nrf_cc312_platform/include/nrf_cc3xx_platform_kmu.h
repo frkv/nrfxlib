@@ -48,6 +48,15 @@ typedef union {
  */
 #define NRF_CC3XX_PLATFORM_KMU_DEFAULT_PERMISSIONS          (0xFFFFFFFCUL)
 
+
+/** @brief Constant value representing the permission to use when writing an
+ *         indentity_key to KMU
+ *
+ * @details This sets up the written key to be non-writable, readable and
+ *          non-pushable
+ */
+#define NRF_CC3XX_PLATFORM_KMU_IDENTITY_KEY_PERMISSIONS     (0xFFFFFFFAUL)
+
 #if defined(NRF9160_XXAA)
 
     /** @brief Address of the AES key register in CryptoCell */
