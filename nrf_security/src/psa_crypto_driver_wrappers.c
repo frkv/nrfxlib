@@ -26,6 +26,7 @@
 #include "psa_crypto_driver_wrappers.h"
 #include "psa_crypto_hash.h"
 #include "psa_crypto_mac.h"
+#include <string.h>
 
 #include "mbedtls/platform.h"
 
@@ -96,6 +97,7 @@
 #include "psa_crypto_se.h"
 #endif
 
+
 psa_status_t psa_driver_wrapper_init( void )
 {
     psa_status_t status = PSA_ERROR_CORRUPTION_DETECTED;
@@ -133,6 +135,8 @@ void psa_driver_wrapper_free( void )
     mbedtls_test_opaque_free( );
 #endif
 }
+
+
 
 /* Start delegation functions */
 psa_status_t psa_driver_wrapper_sign_message(
@@ -1076,6 +1080,20 @@ psa_status_t psa_driver_wrapper_copy_key(
     return( status );
 }
 
+
+psa_status_t psa_driver_wrapper_cipher_encrypt(
+    const psa_key_attributes_t *attributes,
+    const uint8_t *key_buffer,
+    size_t key_buffer_size,
+    psa_algorithm_t alg,
+    const uint8_t *iv,
+    size_t iv_length,
+    const uint8_t *input,
+    size_t input_length,
+    uint8_t *output,
+    size_t output_size,
+    size_t *output_length );
+
 /*
  * Cipher functions
  */
@@ -1084,6 +1102,8 @@ psa_status_t psa_driver_wrapper_cipher_encrypt(
     const uint8_t *key_buffer,
     size_t key_buffer_size,
     psa_algorithm_t alg,
+    const uint8_t *iv,
+    size_t iv_length,
     const uint8_t *input,
     size_t input_length,
     uint8_t *output,
@@ -1093,6 +1113,19 @@ psa_status_t psa_driver_wrapper_cipher_encrypt(
     psa_status_t status = PSA_ERROR_CORRUPTION_DETECTED;
     psa_key_location_t location =
         PSA_KEY_LIFETIME_GET_LOCATION( attributes->core.lifetime );
+
+    /* Circumvention on API-breaker that breaks runtime compatibility.
+     * Please see NCSDK-15614 and remove this once updated runtimes is created. */
+    if(iv_length > 0)
+    {
+        /* Copying the IV to the output variable because runtime-libraries currently
+         * doesn't support the new parameters in Mbed TLS 3.1.0 (iv and iv_length).
+         * Also updating the output and output_size variables to match with the
+         * expected format of the runtime libraries. */
+        output -= iv_length;
+        memcpy(output, iv, iv_length);
+        output_size += iv_length;
+    }
 
     switch( location )
     {
@@ -1149,6 +1182,8 @@ psa_status_t psa_driver_wrapper_cipher_encrypt(
                                                 key_buffer,
                                                 key_buffer_size,
                                                 alg,
+                                                iv,
+                                                iv_length,
                                                 input,
                                                 input_length,
                                                 output,
@@ -1166,6 +1201,8 @@ psa_status_t psa_driver_wrapper_cipher_encrypt(
                                                         key_buffer,
                                                         key_buffer_size,
                                                         alg,
+                                                        iv,
+                                                        iv_length,
                                                         input,
                                                         input_length,
                                                         output,
@@ -1180,6 +1217,8 @@ psa_status_t psa_driver_wrapper_cipher_encrypt(
             (void)key_buffer;
             (void)key_buffer_size;
             (void)alg;
+            (void)iv;
+            (void)iv_length;
             (void)input;
             (void)input_length;
             (void)output;
